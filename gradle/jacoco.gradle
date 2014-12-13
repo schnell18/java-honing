@@ -1,0 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.ajoberstar:gradle-jacoco:0.3.0'
+    }
+}
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = '0.7.2.201409121644'
+}

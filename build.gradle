@@ -1,0 +1,21 @@
+apply plugin: 'sonar-runner'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply from: "$rootDir/gradle/jacoco.gradle"
+
+repositories {
+    mavenCentral()
+}
+
+sonarRunner {
+    toolVersion = '2.4'
+    sonarProperties {
+        property 'sonar.projectName', 'HoneJava'
+        property 'sonar.projectDescription', 'Hone your Java skills'
+        property 'sonar.sourceEncoding', 'UTF-8'
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
