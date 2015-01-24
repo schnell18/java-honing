@@ -13,6 +13,10 @@ sonarRunner {
         property 'sonar.projectName', 'HoneJava'
         property 'sonar.projectDescription', 'Hone your Java skills'
         property 'sonar.sourceEncoding', 'UTF-8'
+        property 'sonar.host.url', 'http://vmcentos66:9000'
+        property 'sonar.jdbc.url', 'jdbc:mysql://vmcentos66:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance'
+        property 'sonar.jdbc.username', 'sonar'
+        property 'sonar.jdbc.password', 'sonar'
     }
 }
 
