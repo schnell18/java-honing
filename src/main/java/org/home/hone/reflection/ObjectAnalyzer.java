@@ -157,7 +157,7 @@ public class ObjectAnalyzer {
     public static void main(String[] args) throws ClassNotFoundException {
         ObjectAnalyzer objectAnalyzer = new ObjectAnalyzer();
         Date date1 = new Date();
-        System.out.printf("%s\n", objectAnalyzer.getClassDefinition("java.util.Date"));
+        System.out.printf("%s\n", objectAnalyzer.getClassDefinition("org.home.hone.inner.TalkingClock$TimerPrinter"));
         //Date date2 = new Date();
         //date2.setTime(date2.getTime() + 1000l);
         //Date[] dates = new Date[]{ date1, date2 };
