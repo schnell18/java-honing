@@ -5,8 +5,6 @@
  */
 package org.home.hone.thread;
 
-import java.util.Collection;
-
 public class ShutdownHook {
 
     static class MyThread extends Thread {
@@ -18,7 +16,8 @@ public class ShutdownHook {
                     if (counter == 5) throw new RuntimeException("Opos");
                     counter ++;
                     System.out.println("Daemon is waking up...");
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }

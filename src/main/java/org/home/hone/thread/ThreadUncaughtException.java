@@ -16,7 +16,8 @@ public class ThreadUncaughtException {
                     if (counter == 5) throw new RuntimeException("Opos");
                     counter ++;
                     System.out.println("Daemon is waking up...");
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }

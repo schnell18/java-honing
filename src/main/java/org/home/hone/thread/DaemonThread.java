@@ -20,7 +20,8 @@ public class DaemonThread extends Thread {
             try {
                 Thread.sleep(1000);
                 System.out.println("Daemon is waking up...");
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
