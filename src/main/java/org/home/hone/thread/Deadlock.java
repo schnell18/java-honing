@@ -3,88 +3,77 @@ package org.home.hone.thread;
 import static java.lang.System.out;
 
 public class Deadlock {
-    static class ResourceA {
+    static class Resource {
+        private String name;
+        private Resource buddy;
 
-        private ResourceB friend;
-
-        public ResourceA(ResourceB buddy) {
-            this.friend = buddy;
+        public Resource(String name) {
+            this.name = name;
         }
 
-        public synchronized void acquire() {
+        public synchronized void acquire(long delay) {
             out.printf(
-                "Thread %s acquired Resource A, trying to get Resource B...\n",
-                Thread.currentThread().getName()
+                "Thread %s acquired %s, trying to get %s ...\n",
+                Thread.currentThread().getName(),
+                this.name,
+                this.buddy.getName()
             );
             try {
-                // slow down to make competitor get the other resources
-                Thread.sleep(1000);
+                Thread.sleep(delay);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            this.friend.hold();
+            this.buddy.hold();
         }
 
         public synchronized void hold() {
             out.printf(
-                "Thread %s hold Resource A\n",
-                Thread.currentThread().getName()
+                "Thread %s hold %s\n",
+                Thread.currentThread().getName(),
+                this.name
             );
         }
 
+        public void setBuddy(Resource buddy) {
+            this.buddy = buddy;
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 
-    static class ResourceB {
-        private ResourceA friend;
+    static class CompetitorThread extends Thread {
+        private Resource resource;
+        private long delay;
 
-        public synchronized void acquire() {
-            out.printf(
-                "Thread %s acquired Resource B, trying to get Resource A...\n",
-                Thread.currentThread().getName()
-            );
-            this.friend.hold();
+        public CompetitorThread(Resource resource, long delay) {
+            this.resource = resource;
+            this.delay = delay;
         }
 
-        public synchronized void hold() {
+        @Override
+        public void run() {
+            resource.acquire(delay);
             out.printf(
-                "Thread %s hold Resource B\n",
+                "Thread %s completes execution!\n",
                 Thread.currentThread().getName()
             );
-        }
-
-        public void setFriend(ResourceA friend) {
-            this.friend = friend;
         }
     }
 
     public static void main(String[] args) {
 
-        ResourceB resourceB = new ResourceB();
-        ResourceA resourceA = new ResourceA(resourceB);
-        resourceB.setFriend(resourceA);
+        Resource resourceA = new Resource("Resource A");
+        Resource resourceB = new Resource("Resource B");
+        resourceA.setBuddy(resourceB);
+        resourceB.setBuddy(resourceA);
 
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                resourceA.acquire();
-                out.printf(
-                    "Thread %s completes execution!\n",
-                    Thread.currentThread().getName()
-                );
-            }
-        });
-        Thread thread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                resourceB.acquire();
-                out.printf(
-                    "Thread %s completes execution!\n",
-                    Thread.currentThread().getName()
-                );
-            }
-        });
+        Thread thread1 = new CompetitorThread(resourceA, 0);
+        Thread thread2 = new CompetitorThread(resourceB, 1000);
         thread1.start();
+        /* uncomment the following code to avoid deadlock */
 //        try {
 //            Thread.sleep(1000);
 //        }
