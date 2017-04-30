@@ -23,5 +23,6 @@ sonarRunner {
 dependencies {
     compile 'org.openjdk.jmh:jmh-core:1.11.3'
     compile 'org.openjdk.jmh:jmh-generator-annprocess:1.11.3'
+    compile files('lib/btrace-client.jar')
     testCompile 'junit:junit:4.11'
 }

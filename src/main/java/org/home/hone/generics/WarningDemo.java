@@ -6,7 +6,7 @@ public class WarningDemo {
         Box<Integer> box = createBox();
     }
 
-    private static Box createBox() {
-        return new Box();
+    private static Box<Integer> createBox() {
+        return new Box<>();
     }
 }

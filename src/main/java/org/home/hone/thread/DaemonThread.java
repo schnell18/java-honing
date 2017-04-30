@@ -1,7 +1,7 @@
-/**
- * A daemon thread is a thread whose execution state is not evaluated
- * when the JVM decides if it should stop or not. The JVM stops when
- * all user threads (in contrast to the daemon threads) are terminated.
+/*
+  A daemon thread is a thread whose execution state is not evaluated
+  when the JVM decides if it should stop or not. The JVM stops when
+  all user threads (in contrast to the daemon threads) are terminated.
  */
 package org.home.hone.thread;
 

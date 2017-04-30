@@ -1,5 +1,5 @@
-/**
- * Demonstrates the basic properties of thread
+/*
+  Demonstrates the basic properties of thread
  */
 package org.home.hone.thread;
 
@@ -19,13 +19,10 @@ public class Runner {
         st.start();
         dumpThreadProps(st);
         Thread runnable = new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("In runnable thread...");
-                    dumpThreadProps(null);
+            () -> {
+                System.out.println("In runnable thread...");
+                dumpThreadProps(null);
 
-                }
             },
             "runnable thread"
         );

@@ -2,13 +2,10 @@ package org.home.hone.gc;
 
 public class MemoryHog {
     public static void main(String[] args) {
-        Thread hog = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int i = 0;
-                while (true) {
-                    System.out.println(new Integer(i ++));
-                }
+        Thread hog = new Thread(() -> {
+            int i = 0;
+            while (true) {
+                System.out.println(new Integer(i ++));
             }
         });
 

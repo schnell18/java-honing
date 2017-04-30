@@ -4,10 +4,11 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ArrayCopy {
+
+
     /**
      * This program demonstrates the use of reflection for manipulating arrays.
      * * @version 1.2 2012-05-04
-     * @author Cay Horstmann
      */
     public static void main(String[] args) {
         int[] a = {1, 2, 3};
