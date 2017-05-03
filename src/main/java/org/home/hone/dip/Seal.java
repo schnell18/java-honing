@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class Seal {
-    public static int seal(File seal, File source, File dest, int marginX, int marginY, float intense) {
+    public static int seal(String seal, String source, String dest, int marginX, int marginY, float intense) {
         try {
-            BufferedImage sourceImage = ImageIO.read(source);
-            BufferedImage sealImage = ImageIO.read(seal);
+            BufferedImage sourceImage = ImageIO.read(new File(source));
+            BufferedImage sealImage = ImageIO.read(new File(seal));
 
             // initializes necessary graphic properties
             Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
@@ -25,7 +25,7 @@ public class Seal {
             // paints the image watermark
             g2d.drawImage(sealImage, posX, posY, null);
 
-            ImageIO.write(sourceImage, "jpg", dest);
+            ImageIO.write(sourceImage, "jpg", new File(dest));
             g2d.dispose();
             return 1;
         }
@@ -37,9 +37,18 @@ public class Seal {
 
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "true");
-        File seal = new File("/Users/justin/work/quicksand/pdfcut/seal.png");
-        File src = new File("/Users/justin/work/quicksand/pdfcut/sa_sheet.jpg");
-        File dest = new File("/Users/justin/work/quicksand/pdfcut/sa_sheet-java-sealed.jpg");
-        Seal.seal(seal, src, dest, 200, 240, 1.0f);
+        if (args.length < 2) {
+            System.err.println("Error: invalid usage");
+            System.exit(1);
+        }
+        else {
+            String seal = args[0];
+
+            for (int i = 1; i < args.length; i++) {
+                String src = args[i];
+                String dest = String.format("%s-java-sealed.jpg", src.split("\\.", 2)[0]);
+                Seal.seal(seal, src, dest, 200, 240, 1.0f);
+            }
+        }
     }
 }

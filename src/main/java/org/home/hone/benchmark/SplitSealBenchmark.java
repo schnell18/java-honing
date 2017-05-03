@@ -1,6 +1,6 @@
 package org.home.hone.benchmark;
 
-import org.home.hone.dip.Seal;
+import org.home.hone.pdfcut.PdfCutter;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Group;
@@ -16,7 +16,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 @State(Scope.Group)
-public class SealBenchmark {
+public class SplitSealBenchmark {
 
     private static volatile int seq;
 
@@ -26,18 +26,18 @@ public class SealBenchmark {
     @GroupThreads(10)
     @Measurement(iterations = 50, time = 1)
     @BenchmarkMode(Mode.Throughput)
-    public int benchmarkSeal() {
+    public int benchmarkSplitAndSeal() {
         String seal = "seal.png";
-        String src = "sa_sheet1.jpg";
-        String dest = String.format("sa_sheet-java-sealed-%05d.jpg", ++seq);
-        return Seal.seal(seal, src, dest, 200, 240, 1.0f);
+        String pdf = "sa_sheet.pdf";
+        return PdfCutter.splitAndSeal(pdf, seal);
     }
 
     public static void main(String[] args) throws RunnerException {
         Options opt = new OptionsBuilder()
-            .include(SealBenchmark.class.getSimpleName())
+            .include(SplitSealBenchmark.class.getSimpleName())
             .forks(1)
             .jvmArgsAppend("-Djava.awt.headless=true")
+            .jvmArgsAppend("-Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider")
             .build();
 
         new Runner(opt).run();

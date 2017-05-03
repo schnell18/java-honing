@@ -21,6 +21,7 @@ sonarRunner {
 }
 
 dependencies {
+    compile 'org.apache.pdfbox:pdfbox:1.8.0'
     compile 'org.openjdk.jmh:jmh-core:1.11.3'
     compile 'org.openjdk.jmh:jmh-generator-annprocess:1.11.3'
     compile files('lib/btrace-client.jar')
