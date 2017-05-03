@@ -1,16 +1,14 @@
 package org.home.hone.pdfcut;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 public class PdfCutter {
 
@@ -41,16 +39,17 @@ public class PdfCutter {
     }
 
     public static int splitAndSeal(String pdfFile, String sealFile) {
+        String password = "";
         int dpi = 150;
-        try {
-            PDDocument document = PDDocument.load(new File(pdfFile));
+        try (PDDocument document = PDDocument.load(new File(pdfFile), password)) {
 
-            List pages = document.getDocumentCatalog().getAllPages();
-            int endPage = pages.size() - 1;
-            for (int i = 0; i < pages.size(); i++) {
-                Object page = pages.get(i);
-                BufferedImage image = ((PDPage) page).convertToImage(TYPE_INT_RGB, dpi);
-                String dest = String.format("%s-%02d-java-sealed.jpg", pdfFile.split("\\.", 2)[0], i);
+
+            ImageType imageType = ImageType.RGB;
+            PDFRenderer renderer = new PDFRenderer(document);
+            int endPage = document.getNumberOfPages() - 1;
+            for (int i = 0; i <= endPage; i++) {
+                String dest = String.format("%s-%02d-java.jpg", pdfFile.split("\\.", 2)[0], i);
+                BufferedImage image = renderer.renderImageWithDPI(i, dpi, imageType);
                 ImageIO.write(image, "jpg", new File(dest));
                 if (i == endPage) {
                     //seal last page
@@ -62,6 +61,7 @@ public class PdfCutter {
             e.printStackTrace();
         }
         return 1;
+
     }
 
     public static void main(String[] args) {
