@@ -38,11 +38,31 @@ public class PdfCutter {
         return 0;
     }
 
-    public static int splitAndSeal(String pdfFile, String sealFile) {
+    public static int split(String pdfFile) {
         String password = "";
         int dpi = 150;
         try (PDDocument document = PDDocument.load(new File(pdfFile), password)) {
 
+            ImageType imageType = ImageType.RGB;
+            PDFRenderer renderer = new PDFRenderer(document);
+            int endPage = document.getNumberOfPages() - 1;
+            for (int i = 0; i <= endPage; i++) {
+                String dest = String.format("%s-%02d-java.jpg", pdfFile.split("\\.", 2)[0], i);
+                BufferedImage image = renderer.renderImageWithDPI(i, dpi, imageType);
+                ImageIO.write(image, "jpg", new File(dest));
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 1;
+
+    }
+
+    public static int splitAndSeal(String pdfFile, String sealFile) {
+        String password = "";
+        int dpi = 150;
+        try (PDDocument document = PDDocument.load(new File(pdfFile), password)) {
 
             ImageType imageType = ImageType.RGB;
             PDFRenderer renderer = new PDFRenderer(document);
@@ -53,7 +73,7 @@ public class PdfCutter {
                 ImageIO.write(image, "jpg", new File(dest));
                 if (i == endPage) {
                     //seal last page
-                    seal(sealFile, image, dest, 200, 200, 1.0f);
+                    seal(sealFile, image, dest, 200, 600, 1.0f);
                 }
             }
         }
@@ -67,8 +87,7 @@ public class PdfCutter {
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "true");
         System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
-//        String pdfFile = "/Users/justin/Downloads/H5stackurl.pdf";
-        String pdfFile = "/Users/justin/work/quicksand/seal/sa_sheet.pdf";
+        String pdfFile = "/Users/justin/work/quicksand/playground/filled-ghost4j.pdf";
         String sealFile = "/Users/justin/work/quicksand/seal/seal.png";
         splitAndSeal(pdfFile, sealFile);
     }

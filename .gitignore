@@ -4,8 +4,13 @@
 *.log
 *.ipr
 *.iml
+*.jpg
+*.png
+*.pdf
 *.iws
 .gradle/
 .vagrant/
 .idea/
 build/
+out/
+target/
